@@ -27,7 +27,7 @@ Deployment on production environment is not yet tested.
 Minimum Required software to run the project
 
 - Java 8
-- Eclipse (preferably with eGit integration)
+- Eclipse (preferably with Gradle integration)
 - Gradle 4
 
 ### Installing
@@ -46,3 +46,16 @@ Minimum Required software to run the project
 - Access ```http://localhost:8081/starter``` in a browser
 
 If a sample page will load, then congratulations you have finished setting up the project.
+
+## Source Description
+
+### Directories
+
+- ```src/main/java``` contains the java source files
+- ```src/main/resources/public``` contains the static files
+- ```src/main/web/ftl``` freemarker templates
+
+### Configuration Files
+
+- ```org.ringo.web.spark.Application.java``` Spark configuration file
+- ```org.ringo.web.spark.freemarker.FreemarkerConfig``` Freemarker Singleton Configuration
