@@ -21,19 +21,40 @@ import java.io.StringWriter;
 
 import javax.servlet.ServletContext;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
 
+/**
+ * Configuration for Freemarker framework.
+ *
+ * @author r.go
+ * @version 0.1
+ */
 public class FreemarkerConfig {
 
+    /** Singleton instance of the class. */
     private static FreemarkerConfig _config;
 
+    /** Static instance for sl4j logger. */
+    private static Logger logger = LoggerFactory.getLogger(FreemarkerConfig.class);
+
+    /** Configuration instance object for Freemarker. */
     private Configuration cfg;
 
+    /**
+     * Private constructor to prevent outside initialization
+     */
     private FreemarkerConfig() { }
 
+    /**
+     * Initializes and retrieves the singleton instance of the class.
+     * @return singleton instance.
+     */
     public static FreemarkerConfig getInstance() {
         if (_config == null) {
             _config = new FreemarkerConfig();
@@ -42,6 +63,8 @@ public class FreemarkerConfig {
     }
 
     public void initialize(ServletContext context) {
+        logger.info("Initiliazing configuration for Freemarker...");
+
         this.cfg = new Configuration(Configuration.VERSION_2_3_27);
         this.cfg.setServletContextForTemplateLoading(context, "ftl");
         this.cfg.setDefaultEncoding("UTF-8");
@@ -51,26 +74,36 @@ public class FreemarkerConfig {
     }
 
     public Template getTemplate(String template) {
+        logger.info("Retrieving template: " + template);
+
         Template templateObj = null;
         try {
             templateObj = this.cfg.getTemplate(template);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return templateObj;
     }
 
     public String getTemplateAsString(String template) {
         Template templateObj = getTemplate(template);
+
+        logger.info("Reading and processing template as string");
         StringWriter stringWriter = new StringWriter();
         try {
             templateObj.process(new Object(), stringWriter);
         } catch (TemplateException | IOException e) {
-            e.printStackTrace();
+        	logger.error(e.getMessage(), e);
         }
         return stringWriter.toString();
     }
 
+    /**
+     * Freemarker Template constant strings.
+     *
+     * @author r.go
+     * @version 0.1
+     */
     public class Templates {
         public static final String STARTER_PAGE = "starter.ftl";
     }

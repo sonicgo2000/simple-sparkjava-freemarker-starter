@@ -20,10 +20,21 @@ import static spark.Spark.get;
 import static spark.Spark.staticFiles;
 
 import org.ringo.web.spark.routes.StarterRoute;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import spark.servlet.SparkApplication;
 
+/**
+ * Configuration class for Spark Framework.
+ *
+ * @author r.go
+ * @version 0.1
+ */
 public class Application implements SparkApplication {
+
+    /** Static instance for sl4j logger. */ 
+    private static Logger logger = LoggerFactory.getLogger(Application.class);
 
     /*
      * (non-Javadoc)
@@ -31,16 +42,22 @@ public class Application implements SparkApplication {
      */
     @Override
     public void init() {
+        logger.info("Initializing Spark framework...");
+
         configure();
         route();
     }
 
     private void configure() {
+        logger.info("Setting up configurations...");
+
         // Configure static files for holding HTML, CSS, and JavaScripts
         staticFiles.location("/public");
     }
 
     private void route() {
+        logger.info("Setting up routers...");
+
         // Configure routing; Using in-line
         get("/hello", (req, res) -> "Hello World");
 
